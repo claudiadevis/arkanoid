@@ -33,7 +33,11 @@ class Portada (Escena):
 
         while not salir:
             for evento in pg.event.get():
-                if pg.QUIT == evento.type:
+                if pg.QUIT == evento.type or (
+                    evento.type == pg.KEYDOWN and evento.key == pg.K_ESCAPE):
+                    return True
+
+                if evento.type == pg.KEYDOWN and evento.key == pg.K_SPACE:
                     salir = True
 
                 self.pantalla.fill((99, 0, 0))
@@ -42,6 +46,7 @@ class Portada (Escena):
                 self.pintar_mensaje()
 
                 pg.display.flip()
+        return False
 
     def pintar_logo(self):
         ancho, alto = self.logo.get_size()
@@ -68,9 +73,10 @@ class Partida(Escena):
 
         while not salir:
             for evento in pg.event.get():
-                if pg.QUIT == evento.type:
-                    salir = True
-
+                if pg.QUIT == evento.type or (
+                    evento.type == pg.KEYDOWN and evento.key == pg.K_ESCAPE):
+                    return True
+                
             self.pantalla.fill((0, 99, 0))
             pg.display.flip()
 
@@ -87,8 +93,9 @@ class Mejores_jugadores(Escena):
 
         while not salir:
             for evento in pg.event.get():
-                if pg.QUIT == evento.type:
-                    salir = True
+                if pg.QUIT == evento.type or (
+                    evento.type == pg.KEYDOWN and evento.key == pg.K_ESCAPE):
+                    return True
 
             self.pantalla.fill((0, 0, 99))
             pg.display.flip()

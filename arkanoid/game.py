@@ -22,7 +22,11 @@ class Arkanoid:
         """
 
         for escena in self.escenas:
-            escena.bucle_principal()
+            acabar_juego = escena.bucle_principal()
+
+            if acabar_juego:
+                print('La escena me pide que acabe el juego')
+                break
             
         pg.quit()
 
