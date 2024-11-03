@@ -1,4 +1,7 @@
+import os
 import pygame as pg
+
+from . import ALTO, ANCHO
 
 
 class Escena:
@@ -17,6 +20,11 @@ class Portada (Escena):
 
     def __init__(self, pantalla):
         super().__init__(pantalla)
+        ruta = os.path.join('resources', 'images', 'arkanoid_name.png')
+        self.logo = pg.image.load(ruta)
+
+        ruta_letra = os.path.join('resources', 'fonts', 'CabinSketch-Bold.ttf')
+        self.tipo_letra = pg.font.Font(ruta_letra, 25)
 
     def bucle_principal(self):
         super().bucle_principal()
@@ -29,7 +37,24 @@ class Portada (Escena):
                     salir = True
 
                 self.pantalla.fill((99, 0, 0))
+
+                self.pintar_logo()
+                self.pintar_mensaje()
+
                 pg.display.flip()
+
+    def pintar_logo(self):
+        ancho, alto = self.logo.get_size()
+        pos_x = (ANCHO - ancho)/2
+        pos_y = (ALTO - alto)/2
+        self.pantalla.blit(self.logo, (pos_x, pos_y))
+
+    def pintar_mensaje(self):
+        mensaje = 'Pulsa <ESPACIO> para comenzar la partida'
+        img_texto = self.tipo_letra.render(mensaje, True, (255, 255, 255))
+        pos_x = (ANCHO - img_texto.get_width())/2
+        pos_y = 5/6 * ALTO
+        self.pantalla.blit(img_texto, (pos_x, pos_y))
 
 
 class Partida(Escena):
@@ -57,7 +82,7 @@ class Mejores_jugadores(Escena):
 
     def bucle_principal(self):
         super().bucle_principal()
-        
+
         salir = False
 
         while not salir:
