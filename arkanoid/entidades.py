@@ -64,3 +64,15 @@ class Ladrillo(pg.sprite.Sprite):
 
 
 
+class Pelota(pg.sprite.Sprite):
+
+    def __init__(self, raqueta):
+        super().__init__()
+        self.image =pg.image.load(
+            os.path.join('resources', 'images', 'ball1.png')
+        )
+        self.raqueta = raqueta
+
+    def update(self):
+        self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
+        
