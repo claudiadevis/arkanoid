@@ -1,2 +1,3 @@
 ANCHO = 500
 ALTO = 700
+FPS = 15
