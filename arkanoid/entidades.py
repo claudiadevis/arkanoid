@@ -13,6 +13,9 @@ class Raqueta(pg.sprite.Sprite):
     4. Volver a la posición inicial
     5....
     """
+
+    velocidad = 10
+
     #Sprite permite coger una imagen y pintarla como objeto, el sprite es el hueco donde 
     #se va a encajar la imagen
 
@@ -35,5 +38,11 @@ class Raqueta(pg.sprite.Sprite):
         if self.contador > 2:
             self.contador = 0
         self.image = self.imagenes[self.contador]
+
+        teclas_pulsadas = pg.key.get_pressed()
+        if teclas_pulsadas[pg.K_LEFT]:
+            self.rect.x -= self.velocidad
+        if teclas_pulsadas[pg.K_RIGHT]:
+            self.rect.x += self.velocidad
 
 
