@@ -50,3 +50,17 @@ class Raqueta(pg.sprite.Sprite):
                 self.rect.right = ANCHO
 
 
+class Ladrillo(pg.sprite.Sprite):
+
+    def __init__(self):
+        super().__init__()
+        
+        ruta_verde = os.path.join('resources', 'images', 'greenTile.png')
+        self.image = pg.image.load(ruta_verde)
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        pass
+
+
+

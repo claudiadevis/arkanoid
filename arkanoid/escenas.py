@@ -2,7 +2,7 @@ import os
 import pygame as pg
 
 from . import ALTO, ANCHO, FPS
-from .entidades import Raqueta
+from .entidades import Ladrillo, Raqueta
 
 
 class Escena:
@@ -71,6 +71,7 @@ class Partida(Escena):
         ruta_fondo = os.path.join('resources', 'images', 'background.jpg')
         self.fondo = pg.image.load(ruta_fondo)
         self.jugador = Raqueta()
+        self.muro = []
 
     def bucle_principal(self):
         super().bucle_principal()
@@ -84,6 +85,7 @@ class Partida(Escena):
                     return True
                 
             self.pintar_fondo()
+            self.pintar_muro()
 
             self.jugador.update()
             self.pantalla.blit(self.jugador.image, self.jugador.rect)
@@ -96,6 +98,20 @@ class Partida(Escena):
         self.pantalla.blit(self.fondo, (600,0))
         self.pantalla.blit(self.fondo, (0,800))
         self.pantalla.blit(self.fondo, (600,800))
+
+    def pintar_muro(self):
+        # num filas
+        # num columnas
+        # bucle filas
+        #   bucle columnas
+        #       xxxxx <---- trabajar con un solo ladrillo
+        filas = 4
+        columnas = 6
+
+        for fila in range(filas):
+            for col in range(columnas):
+                ladrillo = Ladrillo()
+                self.muro.append(ladrillo)
 
 class Mejores_jugadores(Escena):
 
