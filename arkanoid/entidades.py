@@ -81,5 +81,9 @@ class Pelota(pg.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
         else:
             self.rect.x += self.vel_x
+            if self.rect.left < 0 or self.rect.right > ANCHO:
+                self.vel_x = -self.vel_x
             self.rect.y += self.vel_y
+            if self.rect.top < 0:
+                self.vel_y = -self.vel_y
         
