@@ -66,6 +66,9 @@ class Ladrillo(pg.sprite.Sprite):
 
 class Pelota(pg.sprite.Sprite):
 
+    vel_y = -10
+    vel_x = -13
+
     def __init__(self, raqueta):
         super().__init__()
         self.image =pg.image.load(
@@ -73,6 +76,10 @@ class Pelota(pg.sprite.Sprite):
         )
         self.raqueta = raqueta
 
-    def update(self):
-        self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
+    def update(self, partida_empezada):
+        if not partida_empezada:
+            self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
+        else:
+            self.rect.x += self.vel_x
+            self.rect.y += self.vel_y
         
