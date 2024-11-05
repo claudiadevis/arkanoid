@@ -99,7 +99,14 @@ class Partida(Escena):
 
             self.pelota.update(juego_iniciado)
             self.pantalla.blit(self.pelota.image, self.pelota.rect)
+
+            golpeados = pg.sprite.spritecollide(self.pelota, self.muro, True)
+            print('Golpeados:', golpeados)
             
+            if len(golpeados) > 0:
+                self.pelota.vel_y = -self.pelota.vel_y
+                
+
             pg.display.flip()
     
     def pintar_fondo(self):
