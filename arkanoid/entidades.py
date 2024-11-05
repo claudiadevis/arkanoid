@@ -53,15 +53,31 @@ class Raqueta(pg.sprite.Sprite):
 
 class Ladrillo(pg.sprite.Sprite):
 
-    def __init__(self):
+    VERDE = 0
+    ROJO = 1
+    ROJO_ROTO = 2
+    IMG_LADRILLO = ['greenTile.png', 'redTile.png', 'redTileBreak.png']
+
+    def __init__(self, color = VERDE):
         super().__init__()
-        
-        ruta_verde = os.path.join('resources', 'images', 'greenTile.png')
-        self.image = pg.image.load(ruta_verde)
+
+        self.tipo = color
+        self.imagenes = []
+        for img in self.IMG_LADRILLO:
+            ruta = os.path.join('resources', 'images', img)
+            self.imagenes.append(pg.image.load(ruta)) 
+
+        self.image = self.imagenes[color]
         self.rect = self.image.get_rect()
 
-    def update(self):
-        pass
+    def update(self, muro):
+        if self.tipo == Ladrillo.ROJO:
+            self.tipo = Ladrillo.ROJO_ROTO
+        else: 
+            #muro.remove(self)
+            #self.remove(muro)
+            self.kill()
+        self.image = self.imagenes[self.tipo]
 
 
 

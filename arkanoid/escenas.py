@@ -100,12 +100,13 @@ class Partida(Escena):
             self.pelota.update(juego_iniciado)
             self.pantalla.blit(self.pelota.image, self.pelota.rect)
 
-            golpeados = pg.sprite.spritecollide(self.pelota, self.muro, True)
-            print('Golpeados:', golpeados)
+            golpeados = pg.sprite.spritecollide(self.pelota, self.muro, False)
             
             if len(golpeados) > 0:
+                for ladrillo in golpeados:
+                    ladrillo.update(self.muro)
                 self.pelota.vel_y = -self.pelota.vel_y
-                
+
 
             pg.display.flip()
     
@@ -125,10 +126,15 @@ class Partida(Escena):
         filas = 4
         columnas = 5
         margen_superior = 20
+        tipo = None
 
         for fila in range(filas):
             for col in range(columnas):
-                ladrillo = Ladrillo()
+                if tipo == Ladrillo.ROJO:
+                    tipo = Ladrillo.VERDE
+                else:
+                    tipo = Ladrillo.ROJO
+                ladrillo = Ladrillo(tipo)
                 ancho_muro = ladrillo.rect.width * columnas
                 margen_izquierdo = (ANCHO - ancho_muro) / 2
                 ladrillo.rect.x = ladrillo.rect.width * col + margen_izquierdo
