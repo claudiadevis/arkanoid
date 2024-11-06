@@ -90,9 +90,10 @@ class Pelota(pg.sprite.Sprite):
         )
         self.raqueta = raqueta
         self.init_velocidades()
+        self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
+        self.he_perdido = False
 
     def update(self, partida_empezada):
-        continuar = True
         if not partida_empezada:
             self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
         else:
@@ -105,15 +106,27 @@ class Pelota(pg.sprite.Sprite):
                 self.vel_y = -self.vel_y
 
             if self.rect.top > ALTO:
-                continuar = False
+                self.he_perdido = True
 
             #if self.rect.colliderect(self.raqueta):
             #    self.init_velocidades()
             if pg.sprite.collide_mask(self, self.raqueta):
                 self.init_velocidades()
-        
-            return continuar
 
     def init_velocidades(self):
         self.vel_x = randint(-VEL_MAX, VEL_MAX)
         self.vel_y = randint(-VEL_MAX, -VEL_MINIMA_Y)
+
+class ContadorVidas:
+
+    def __init__(self, vidas_iniciales):
+        self.vidas = vidas_iniciales
+
+    def perder_vida(self):
+        self.vidas -= 1
+        print('Has perdido una vida. Te quedan', self.vidas)
+        return self.vidas == 0
+    
+    def pintar(self):
+        #todo pintar el contador de vidas en la escena de al partida
+        pass
