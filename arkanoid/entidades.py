@@ -92,6 +92,7 @@ class Pelota(pg.sprite.Sprite):
         self.init_velocidades()
 
     def update(self, partida_empezada):
+        continuar = True
         if not partida_empezada:
             self.rect = self.image.get_rect(midbottom=self.raqueta.rect.midtop)
         else:
@@ -104,20 +105,15 @@ class Pelota(pg.sprite.Sprite):
                 self.vel_y = -self.vel_y
 
             if self.rect.top > ALTO:
-                self.pierdes()
-                self.reset()
+                continuar = False
 
             #if self.rect.colliderect(self.raqueta):
             #    self.init_velocidades()
             if pg.sprite.collide_mask(self, self.raqueta):
                 self.init_velocidades()
-
-    def pierdes(self):
-        print('Pierdes una vida')
-
-    def reset(self):
-        print('La pelota debe volver al inicio para seguir jugando con la siguiente vida')
         
+            return continuar
+
     def init_velocidades(self):
         self.vel_x = randint(-VEL_MAX, VEL_MAX)
         self.vel_y = randint(-VEL_MAX, -VEL_MINIMA_Y)

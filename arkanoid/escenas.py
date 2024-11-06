@@ -93,19 +93,19 @@ class Partida(Escena):
             self.pintar_fondo()
             self.muro.draw(self.pantalla)
 
-
             self.jugador.update()
             self.pantalla.blit(self.jugador.image, self.jugador.rect)
 
-            self.pelota.update(juego_iniciado)
+            juego_iniciado = self.pelota.update(juego_iniciado)
             self.pantalla.blit(self.pelota.image, self.pelota.rect)
 
             golpeados = pg.sprite.spritecollide(self.pelota, self.muro, False)
-            
+
             if len(golpeados) > 0:
                 for ladrillo in golpeados:
                     ladrillo.update(self.muro)
                 self.pelota.vel_y = -self.pelota.vel_y
+                
 
 
             pg.display.flip()
