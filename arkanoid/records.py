@@ -1,3 +1,4 @@
+import csv
 import os
 
 MAX_RECORDS = 3
@@ -10,10 +11,16 @@ class Records:
     path = os.path.join(base_dir, 'data', filename)
 
     def __init__(self):
-        pass
+        self.game_records = []
+        self.check_records_file()
 
     def check_records_file(self):
-        pass
+        data_dir = os.path.dirname(self.path)
+        if not os.path.isdir(data_dir):
+            os.makedirs(data_dir)
+            print('No había directorio para datos, pero lo he creado!')
+        if not os.path.exists(self.path):
+            self.reset()
 
     def insertar_record(self, nombre, puntuacion):
         pass
@@ -22,10 +29,24 @@ class Records:
         pass
 
     def guardar(self):
-        pass
+        with open(self.path, mode="w") as records_file:
+            writer = csv.writer(records_file, lineterminator='\n')
+            writer.writerow(['Nombre', 'Puntos'])
+            writer.writerows(self.game_records)
+            
 
     def cargar(self):
         pass
 
     def reset(self):
-        pass
+        """
+        Crea el archivo de records VACÍO.
+        """
+        # ¿dónde guardo los records?
+        # vaciar los records guardados para que no haya ninguno
+        # guardar el fichero
+
+        self.game_records = []
+        for cont in range(MAX_RECORDS):
+            self.game_records.append(['---', 0])
+        self.guardar()
