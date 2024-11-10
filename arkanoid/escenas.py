@@ -116,6 +116,7 @@ class Partida(Escena):
             if len(golpeados) > 0:
                 for ladrillo in golpeados:
                     ladrillo.update(self.muro)
+                    print(str(ladrillo.ubicacion[0]) + str(ladrillo.ubicacion[1]))
                 self.pelota.vel_y = -self.pelota.vel_y
 
             pg.display.flip()
@@ -137,6 +138,7 @@ class Partida(Escena):
         columnas = 5
         margen_superior = 20
         tipo = None
+        
 
         for fila in range(filas):
             for col in range(columnas):
@@ -145,11 +147,13 @@ class Partida(Escena):
                 else:
                     tipo = Ladrillo.ROJO
                 ladrillo = Ladrillo(tipo)
+                ladrillo.ubicacion = [fila, col]
                 ancho_muro = ladrillo.rect.width * columnas
                 margen_izquierdo = (ANCHO - ancho_muro) / 2
                 ladrillo.rect.x = ladrillo.rect.width * col + margen_izquierdo
                 ladrillo.rect.y = ladrillo.rect.height * fila + margen_superior
                 self.muro.add(ladrillo)
+
 
 class Mejores_jugadores(Escena):
 

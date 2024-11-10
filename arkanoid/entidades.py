@@ -58,8 +58,11 @@ class Ladrillo(pg.sprite.Sprite):
     ROJO_ROTO = 2
     IMG_LADRILLO = ['greenTile.png', 'redTile.png', 'redTileBreak.png']
 
-    def __init__(self, color = VERDE):
+    def __init__(self, color = VERDE, puntuacion = 10, fil = 1, columna = 1):
         super().__init__()
+        self.puntuacion = puntuacion
+        self.ubicacion = [fil, columna]
+
 
         self.tipo = color
         self.imagenes = []
