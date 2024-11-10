@@ -17,9 +17,6 @@ class Raqueta(pg.sprite.Sprite):
 
     velocidad = 10
 
-    #Sprite permite coger una imagen y pintarla como objeto, el sprite es el hueco donde 
-    #se va a encajar la imagen
-
     def __init__(self):
         super().__init__()
 
@@ -34,7 +31,6 @@ class Raqueta(pg.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom=(ANCHO/2, ALTO-25))
 
     def update(self):
-        #00 -> 01 -> 02 -> 00 -> 01
         self.contador += 1
         if self.contador > 2:
             self.contador = 0
@@ -58,14 +54,12 @@ class Ladrillo(pg.sprite.Sprite):
     ROJO_ROTO = 2
     IMG_LADRILLO = ['greenTile.png', 'redTile.png', 'redTileBreak.png']
 
-    def __init__(self, color = VERDE, puntuacion = 10, fil = 1, columna = 1):
+    def __init__(self, color = VERDE):
         super().__init__()
-        self.puntuacion = puntuacion
-        self.ubicacion = [fil, columna]
-
 
         self.tipo = color
         self.imagenes = []
+        self.puntuacion = 0
         for img in self.IMG_LADRILLO:
             ruta = os.path.join('resources', 'images', img)
             self.imagenes.append(pg.image.load(ruta)) 
@@ -73,15 +67,16 @@ class Ladrillo(pg.sprite.Sprite):
         self.image = self.imagenes[color]
         self.rect = self.image.get_rect()
 
-    def update(self, muro):
+    def update(self, muro, fil):
         if self.tipo == Ladrillo.ROJO:
             self.tipo = Ladrillo.ROJO_ROTO
-        else: 
-            #muro.remove(self)
-            #self.remove(muro)
+        else:
+            if self.tipo == Ladrillo.ROJO_ROTO:
+                self.puntuacion = 20 * (fil)
+            if self.tipo == Ladrillo.VERDE:
+                self.puntuacion = 10 * (fil)
             self.kill()
         self.image = self.imagenes[self.tipo]
-
 
 
 class Pelota(pg.sprite.Sprite):
@@ -111,14 +106,13 @@ class Pelota(pg.sprite.Sprite):
             if self.rect.top > ALTO:
                 self.he_perdido = True
 
-            #if self.rect.colliderect(self.raqueta):
-            #    self.init_velocidades()
             if pg.sprite.collide_mask(self, self.raqueta):
                 self.init_velocidades()
 
     def init_velocidades(self):
         self.vel_x = randint(-VEL_MAX, VEL_MAX)
         self.vel_y = randint(-VEL_MAX, -VEL_MINIMA_Y)
+
 
 class ContadorVidas:
 
@@ -137,6 +131,7 @@ class ContadorVidas:
         for vida in self.vidas:
             vida.pintar_vida(pantalla, cont)
             cont += 1
+
 
 class Vida():
 
@@ -162,6 +157,7 @@ class Marcador():
     def __init__(self):
         self.preparar_tipografia()
         self.reset()
+        self.puntuacion = 0
 
     def preparar_tipografia(self):
         tipos = pg.font.get_fonts()
@@ -183,5 +179,4 @@ class Marcador():
         y = y = ALTO - margen_inf - alto_img
         pantalla.blit(img_texto,(x,y))
 
-    #def update(self):
     

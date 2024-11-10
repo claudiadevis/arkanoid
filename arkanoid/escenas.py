@@ -78,9 +78,10 @@ class Partida(Escena):
 
     def bucle_principal(self):
         super().bucle_principal()
-
+        filas = 1
+        columnas = 2
         salir = False
-        self.crear_muro()
+        self.crear_muro(filas, columnas)
         juego_iniciado = False
 
         while not salir:
@@ -94,6 +95,11 @@ class Partida(Escena):
                 
             self.pintar_fondo()
             self.muro.draw(self.pantalla)
+
+            if len(self.muro) == 0:
+                filas += 1
+                columnas += 1
+                self.crear_muro(filas, columnas)
 
             self.contador_vidas.pintar(self.pantalla)
             
@@ -115,8 +121,12 @@ class Partida(Escena):
 
             if len(golpeados) > 0:
                 for ladrillo in golpeados:
-                    ladrillo.update(self.muro)
-                    print(str(ladrillo.ubicacion[0]) + str(ladrillo.ubicacion[1]))
+                    ladrillo.update(self.muro,ladrillo.fil)
+                    self.marcador.puntuacion += ladrillo.puntuacion
+                    #print(ladrillo.tipo)
+                    #print(ladrillo.fil)
+                    #print(self.marcador.puntuacion)
+
                 self.pelota.vel_y = -self.pelota.vel_y
 
             pg.display.flip()
@@ -128,27 +138,22 @@ class Partida(Escena):
         self.pantalla.blit(self.fondo, (0,800))
         self.pantalla.blit(self.fondo, (600,800))
 
-    def crear_muro(self):
-        # num filas
-        # num columnas
-        # bucle filas
-        #   bucle columnas
-        #       xxxxx <---- trabajar con un solo ladrillo
-        filas = 4
-        columnas = 5
+    def crear_muro(self, filas, columnas):
+        self.filas = filas
+        self.columnas = columnas
         margen_superior = 20
         tipo = None
         
 
-        for fila in range(filas):
-            for col in range(columnas):
+        for fila in range(self.filas):
+            for col in range(self.columnas):
                 if tipo == Ladrillo.ROJO:
                     tipo = Ladrillo.VERDE
                 else:
                     tipo = Ladrillo.ROJO
                 ladrillo = Ladrillo(tipo)
-                ladrillo.ubicacion = [fila, col]
-                ancho_muro = ladrillo.rect.width * columnas
+                ladrillo.fil = self.filas - fila
+                ancho_muro = ladrillo.rect.width * self.columnas
                 margen_izquierdo = (ANCHO - ancho_muro) / 2
                 ladrillo.rect.x = ladrillo.rect.width * col + margen_izquierdo
                 ladrillo.rect.y = ladrillo.rect.height * fila + margen_superior
