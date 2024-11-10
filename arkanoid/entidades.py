@@ -3,7 +3,7 @@ from random import randint
 
 import pygame as pg
 
-from . import ANCHO, ALTO, VEL_MAX, VEL_MINIMA_Y
+from . import ANCHO, ALTO, VEL_MAX, VEL_MINIMA_Y, VIDAS_INICIALES, TAM_LETRA_MARCADOR, COLOR_OBJETOS
 
 
 class Raqueta(pg.sprite.Sprite):
@@ -119,14 +119,66 @@ class Pelota(pg.sprite.Sprite):
 
 class ContadorVidas:
 
-    def __init__(self, vidas_iniciales):
-        self.vidas = vidas_iniciales
+    def __init__(self, vidas_iniciales, pelota):
+        self.vidas_restantes = vidas_iniciales
+        self.vidas = [Vida(pelota), Vida(pelota), Vida(pelota)]
 
     def perder_vida(self):
-        self.vidas -= 1
-        print('Has perdido una vida. Te quedan', self.vidas)
-        return self.vidas == 0
+        self.vidas_restantes -= 1
+        self.vidas.pop()
+        print('Has perdido una vida. Te quedan', self.vidas_restantes)
+        return self.vidas_restantes == 0
     
-    def pintar(self):
-        #todo pintar el contador de vidas en la escena de al partida
-        pass
+    def pintar(self, pantalla):
+        cont = 0
+        for vida in self.vidas:
+            vida.pintar_vida(pantalla, cont)
+            cont += 1
+
+class Vida():
+
+    def __init__(self, pelota):
+        self.image = pelota.image
+        self.rect = self.image.get_rect()
+        self.ancho = self.rect.width
+        self.alto = self.rect.height
+
+    def pintar_vida(self, pantalla, cont):
+        margen_izq = 10
+        margen_inf = 10
+        espacio_entre_pelotas = 5
+        x = self.ancho * cont + margen_izq + espacio_entre_pelotas * cont
+        y = ALTO - margen_inf - self.alto
+        pantalla.blit(self.image, (x, y))
+
+
+class Marcador():
+
+    nombre_tipo_letra = pg.font.get_default_font()
+
+    def __init__(self):
+        self.preparar_tipografia()
+        self.reset()
+
+    def preparar_tipografia(self):
+        tipos = pg.font.get_fonts()
+        letra = 'arial'
+        if letra not in tipos:
+            letra = pg.font.get_default_font()
+        self.tipo_letra = pg.font.SysFont(letra, TAM_LETRA_MARCADOR)
+        
+    def reset(self):
+        self.puntuacion = 0
+
+    def pintame(self, pantalla):
+        margen_der = 10
+        margen_inf = 10
+        img_texto = self.tipo_letra.render(f'Puntos: {self.puntuacion}', True, COLOR_OBJETOS)
+        ancho_img = img_texto.get_width()
+        alto_img = img_texto.get_height()
+        x = ANCHO - margen_der - ancho_img
+        y = y = ALTO - margen_inf - alto_img
+        pantalla.blit(img_texto,(x,y))
+
+    #def update(self):
+    
