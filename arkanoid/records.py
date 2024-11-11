@@ -11,8 +11,9 @@ class Records:
     path = os.path.join(base_dir, 'data', filename)
 
     def __init__(self):
-        self.game_records = []
+        #self.game_records = []
         self.check_records_file()
+        self.cargar()
 
     def check_records_file(self):
         data_dir = os.path.dirname(self.path)
@@ -23,7 +24,14 @@ class Records:
             self.reset()
 
     def insertar_record(self, nombre, puntuacion):
-        pass
+        contador = 0
+        for item in self.game_records:
+            if puntuacion > item[1]:
+                self.game_records.insert(contador, [nombre, puntuacion])
+                break
+            contador += 1
+        self.game_records = self.game_records[:MAX_RECORDS]
+        self.guardar()
 
     @property
     def puntuacion_menor(self):
