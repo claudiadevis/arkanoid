@@ -25,8 +25,9 @@ class Records:
     def insertar_record(self, nombre, puntuacion):
         pass
 
+    @property
     def puntuacion_menor(self):
-        pass
+        return self.game_records[-1][1]
 
     def guardar(self):
         with open(self.path, mode="w") as records_file:
