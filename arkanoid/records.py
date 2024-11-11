@@ -24,12 +24,14 @@ class Records:
             self.reset()
 
     def insertar_record(self, nombre, puntuacion):
-        contador = 0
-        for item in self.game_records:
-            if puntuacion > item[1]:
-                self.game_records.insert(contador, [nombre, puntuacion])
-                break
-            contador += 1
+        # contador = 0
+        # for item in self.game_records:
+        #     if puntuacion > item[1]:
+        #         self.game_records.insert(contador, [nombre, puntuacion])
+        #         break
+        #     contador += 1
+        self.game_records.append([nombre, puntuacion])
+        self.game_records.sort(key=lambda dato: dato[1], reverse=True)
         self.game_records = self.game_records[:MAX_RECORDS]
         self.guardar()
 
