@@ -36,7 +36,18 @@ class Records:
             
 
     def cargar(self):
-        pass
+        # records_file = open(self.path, mode = 'r')
+        # records_file.close()
+        with open(self.path, mode='r') as records_file:
+            reader = csv.reader(records_file, lineterminator='\n')
+            self.game_records = []
+            contador = 0
+            for linea in reader:
+                contador += 1
+                if contador == 1:
+                    continue
+                self.game_records.append([linea[0], int(linea[1])])
+
 
     def reset(self):
         """
